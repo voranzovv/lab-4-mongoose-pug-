@@ -1,0 +1,14 @@
+extends common/layout
+
+block layout-content
+  h1 Movie List
+
+  a(href="/update") Update Rating
+  |  
+  a(href="/delete") Delete R Movies
+
+  each movie in movies
+    div(style="border:1px solid #ccc; margin:10px; padding:10px;")
+      h2= movie.title
+      p Year: #{movie.year}
+      p Rating: #{movie.rating}
