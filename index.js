@@ -17,6 +17,20 @@ app.set("view engine", "pug");
 
 //set up folder for static files
 app.use(express.static(path.join(__dirname, "public")));
+//cretae movie list if empty
+const movies = [
+  { title: "Inception", year: 2010, rating: "PG-13" },
+  { title: "Titanic", year: 1997, rating: "PG" },
+  { title: "Interstellar", year: 2014, rating: "PG-13" },
+  { title: "The Dark Knight", year: 2008, rating: "PG-13" },
+  { title: "The Matrix", year: 1999, rating: "R" },
+  { title: "The Shawshank Redemption", year: 1994, rating: "R" },
+  {
+    title: "The Lord of the Rings: The Return of the King",
+    year: 2003,
+    rating: "PG-13",
+  },
+];
 
 //USE PAGE ROUTES FROM ROUTER(S)
 app.get("/", async (req, res) => {
@@ -33,11 +47,24 @@ app.get("/", async (req, res) => {
 });
 
 app.get("/update", async (req, res) => {
-  await db.updateMovieRating("Titanic", "r");
+  await db.updateMovieRating("Titanic", "R");
   res.redirect("/");
 });
+
+//update movie rating by id
+app.get("/update/:id", async (req, res) => {
+  await db.updateMovieRatingById(req.params.id, "R");
+  res.redirect("/");
+});
+//delete by id
+app.get("/delete/:id", async (req, res) => {
+  await db.deleteMovieById(req.params.id);
+  res.redirect("/");
+});
+
+//delete all the movies with the rating r
 app.get("/delete", async (req, res) => {
-  await db.deleteMoviesByRating("r");
+  await db.deleteMoviesByRating("R");
   res.redirect("/");
 });
 //set up server listening
